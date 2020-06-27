@@ -1,14 +1,94 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+:root {
+  --cell-size: 50px;
+}
+
+/************** Main **************/
+.mine-sweeper {
+  display: flex;
+  flex-direction: column;
+}
+
+/************** Board head **************/
+.board-head {
+  height: 100px;
+  padding: 10px;
+  background-color: blanchedalmond;
+}
+
+.board-head__new-game-btn {
+  cursor: pointer;
+}
+
+/************** Board **************/
+.board {
+  position: relative;
+  display: inline-block;
+  margin: 0 auto;
+  border: 1px solid black;
+}
+
+/************** Row **************/
+.row {
+  display: flex;
+}
+
+.row:not(:last-child) {
+  border-bottom: 1px solid black;
+}
+
+/************** Cell **************/
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  height: var(--cell-size);
+  width: var(--cell-size);
+  background-color: burlywood;
+}
+
+.cell:hover {
+  background-color: darkgoldenrod;
+}
+
+.cell:not(:last-child) {
+  border-right: 1px solid black;
+}
+
+.cell.is-open {
+  background-color: azure;
+}
+
+.cell.has-mine::after {
+  content: "M";
+}
+
+.cell.has-flag:after {
+  content: "F";
+}
+
+.cell.has-mine::after,
+.cell.has-flag:after {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
 }
