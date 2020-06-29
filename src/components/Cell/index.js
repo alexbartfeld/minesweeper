@@ -8,8 +8,8 @@ export default function Cell(props) {
     cellClasses += hasFlag ? ' has-flag' : '';
 
     return (
-        <div className={cellClasses} onClick={() => { reveal(props.status) }}>
-            {nearByMines > 0 ? nearByMines : null}
+        <div className={cellClasses} onClick={(event) => { reveal(event, props.status) }}>
+            {isOpen && nearByMines > 0 ? nearByMines : null}
         </div>
     )
 }
