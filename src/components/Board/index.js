@@ -9,7 +9,7 @@ export default class Board extends Component {
       board: this.createBoard(props),
     };
 
-    this.reveal = this.reveal.bind(this);
+    this.onCellClick = this.onCellClick.bind(this);
   }
 
   createBoard = (props) => {
@@ -70,48 +70,40 @@ export default class Board extends Component {
     return board;
   };
 
-  reveal(event, cell) {
+  onCellClick(event, cell) {
     let board = this.state.board;
-    const currentCell = board[cell.r][cell.c];
-    let flag = 0;
-    let isMine = false;
-    let openedCells = 0;
 
     if (event.shiftKey) { // we're placing flags by holding shift while clicking on a cell
-      if (currentCell.isOpen) return;
-      if (currentCell.hasFlag) { // let's remove a flag if it's already has one
-        currentCell.hasFlag = false;
-        flag = -1;
-      } else { // let's place a flag on it
-        currentCell.hasFlag = true;
-        flag = 1;
+      if (cell.isOpen) return;
+      if (cell.hasFlag) { // let's remove a flag if it's already has one
+        cell.hasFlag = false;
+        this.props.updateFlags(-1);
+      } else { // let's place a flag on it if it doesn't have one
+        if (this.props.flags > 0) { // make sure you have spare flags first
+          cell.hasFlag = true;
+          this.props.updateFlags(1);
+        }
       }
     }
-    // you can't open a flagged cell by game rules
+    // you can't open a flagged cell
     else if (cell.hasFlag) return;
     // well this should end the game ... 
     else if (cell.hasMine) {
-      isMine = true;
+      this.props.endGame();
     }
     // here we should open the cells
     else if (!cell.isOpen) {
-      board = this.openAdjacentCells(currentCell, board);
+      board = this.openAdjacentCells(cell, board);
     }
 
-    this.setState({ board: [...board] }, () => {
-      this.props.onCellClick({
-        flag,
-        isMine,
-        openedCells
-      });
-    });
+    this.setState({ board: [...board] });
   }
 
   openAdjacentCells(startCell, board) {
     const stack = [];
     const bLength = board.length;
     const rLength = board[0].length;
-    const traverse = (location) => {
+    ((location) => {
       stack.push(location);
       while (stack.length) {
         const l = stack.pop();
@@ -125,11 +117,10 @@ export default class Board extends Component {
         if (cell.isOpen) {
           continue;
         }
+        cell.isOpen = true;
         if (cell.nearByMines > 0) {
-          cell.isOpen = true;
           continue;
         }
-        cell.isOpen = true;
         // top
         stack.push([r - 1, c]);
         // top-left
@@ -147,8 +138,7 @@ export default class Board extends Component {
         // bottom-right
         stack.push([r + 1, c + 1]);
       }
-    }
-    traverse([startCell.r, startCell.c]);
+    })([startCell.r, startCell.c]);
     return board;
   }
 
@@ -156,7 +146,7 @@ export default class Board extends Component {
     return (
       <div className="board">
         {this.state.board.map((row, i) => {
-          return <Row key={i} reveal={this.reveal} cells={row} />;
+          return <Row key={i} onCellClick={this.onCellClick} cells={row} />;
         })}
       </div>
     );

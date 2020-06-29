@@ -8,27 +8,25 @@ export default class Minesweeper extends Component {
     super()
 
     this.state = {
-      rows: 10,
-      cells: 10,
-      flags: 1,
-      mines: 20,
+      rows: 5,
+      cells: 5,
+      flags: 2,
+      mines: 2,
       revealedCells: 0,
       isGameOver: false,
       isPlayerWon: false
     }
 
-    this.onCellClick = this.onCellClick.bind(this);
+    this.updateFlags = this.updateFlags.bind(this);
   }
 
   // what ever happend on the board now need to be ruled by the game rules
-  onCellClick(status) {
-    const { flag, isMine, openedCells } = status;
-    if (isMine) {
-      alert('Boom you just exploeded!');
-    }
+  updateFlags(flag) {
     this.setState({ flags: this.state.flags - flag })
-    // see if openedCells === (row * cells) - mines && all mines are flagged
+  }
 
+  endGame(msg) {
+    alert(`${msg} Your fight is over!`);
   }
 
   render() {
@@ -39,7 +37,9 @@ export default class Minesweeper extends Component {
           rows={this.state.rows}
           cells={this.state.cells}
           mines={this.state.mines}
-          onCellClick={this.onCellClick}
+          flags={this.state.flags}
+          updateFlags={this.updateFlags}
+          endGame={this.endGame}
         />
       </div>
     )
