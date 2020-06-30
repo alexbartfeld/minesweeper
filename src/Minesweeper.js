@@ -10,10 +10,14 @@ export default class Minesweeper extends Component {
     this.state = {
       rows: 5,
       cells: 5,
-      flags: 2,
-      mines: 2
+      flags: 1,
+      mines: 1,
+      isGameOver: false,
+      isWon: false,
+      gameActions: 0
     }
 
+    this.endGame = this.endGame.bind(this);
     this.updateFlags = this.updateFlags.bind(this);
   }
 
@@ -23,18 +27,23 @@ export default class Minesweeper extends Component {
   }
 
   endGame(isWon) {
-    if (isWon) {
-      alert('Seem like you won this one');
-    } else {
-      alert(`Your fight is over!`);
+    if (!this.state.isGameOver) {
+      this.setState({ isGameOver: true, isWon });
     }
   }
 
+  restartGame() {
+    this.setState({ gameActions: 0 })
+  }
+
   render() {
+    const classes = this.state.isGameOver ? 'mine-sweeper game-over' : 'mine-sweeper'
+
     return (
-      <div className="mine-sweeper">
-        <BoardHead flags={this.state.flags} />
+      <div className={classes}>
+        <BoardHead isGameOver={this.state.isGameOver} isWon={this.state.isWon} flags={this.state.flags} />
         <Board
+          blockBoard={this.state.isGameOver}
           rows={this.state.rows}
           cells={this.state.cells}
           mines={this.state.mines}

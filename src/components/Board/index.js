@@ -13,6 +13,12 @@ export default class Board extends Component {
     this.onCellClick = this.onCellClick.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    /* this.setState({
+      board: this.createBoard(nextProps)
+    }); */
+  }
+
   componentDidUpdate() {
     if (this.props.flags === 0 && this.state.minesToFlag === 0) {
       this.props.endGame(true);
@@ -78,6 +84,8 @@ export default class Board extends Component {
   };
 
   onCellClick(event, cell) {
+    if (this.props.blockBoard) return;
+
     let board = this.state.board;
 
     if (event.shiftKey) { // we're placing flags by holding shift while clicking on a cell
