@@ -1,4 +1,4 @@
-*{
+* {
   user-select: none;
 }
 
@@ -81,6 +81,7 @@ code {
 
 .cell.has-mine::after {
   content: "M";
+  background-color: red;
 }
 
 .cell.has-flag:after {

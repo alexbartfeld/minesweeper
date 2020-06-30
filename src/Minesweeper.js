@@ -11,10 +11,7 @@ export default class Minesweeper extends Component {
       rows: 5,
       cells: 5,
       flags: 2,
-      mines: 2,
-      revealedCells: 0,
-      isGameOver: false,
-      isPlayerWon: false
+      mines: 2
     }
 
     this.updateFlags = this.updateFlags.bind(this);
