@@ -25,8 +25,12 @@ export default class Minesweeper extends Component {
     this.setState({ flags: this.state.flags - flag })
   }
 
-  endGame(msg) {
-    alert(`${msg} Your fight is over!`);
+  endGame(isWon) {
+    if (isWon) {
+      alert('Seem like you won this one');
+    } else {
+      alert(`Your fight is over!`);
+    }
   }
 
   render() {

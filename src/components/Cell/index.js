@@ -4,7 +4,7 @@ export default function Cell(props) {
     const { status: { nearByMines, isOpen, hasMine, hasFlag }, onCellClick } = props;
     let cellClasses = 'cell';
     cellClasses += isOpen ? ' is-open' : '';
-    cellClasses += hasMine ? ' has-mine' : '';
+    cellClasses += isOpen && hasMine ? ' has-mine' : '';
     cellClasses += hasFlag ? ' has-flag' : '';
 
     return (

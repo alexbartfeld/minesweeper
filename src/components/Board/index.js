@@ -7,9 +7,16 @@ export default class Board extends Component {
 
     this.state = {
       board: this.createBoard(props),
+      minesToFlag: props.mines
     };
 
     this.onCellClick = this.onCellClick.bind(this);
+  }
+
+  componentDidUpdate() {
+    if (this.props.flags === 0 && this.state.minesToFlag === 0) {
+      this.props.endGame(true);
+    }
   }
 
   createBoard = (props) => {
@@ -75,6 +82,7 @@ export default class Board extends Component {
 
     if (event.shiftKey) { // we're placing flags by holding shift while clicking on a cell
       if (cell.isOpen) return;
+
       if (cell.hasFlag) { // let's remove a flag if it's already has one
         cell.hasFlag = false;
         this.props.updateFlags(-1);
@@ -84,22 +92,30 @@ export default class Board extends Component {
           this.props.updateFlags(1);
         }
       }
+      // update if a mine was flagged or unflagged
+      if (cell.hasMine && cell.hasFlag) {
+        this.setState({ minesToFlag: this.state.minesToFlag - 1 })
+      }
+      else if (cell.hasMine && !cell.hasFlag) {
+        this.setState({ minesToFlag: this.state.minesToFlag + 1 })
+      }
     }
     // you can't open a flagged cell
     else if (cell.hasFlag) return;
     // well this should end the game ... 
     else if (cell.hasMine) {
-      this.props.endGame();
+      cell.isOpen = true;
+      this.props.endGame(false);
     }
-    // here we should open the cells
+    // here we should open the cell and see what's inside
     else if (!cell.isOpen) {
-      board = this.openAdjacentCells(cell, board);
+      board = this.openCells(cell, board);
     }
 
     this.setState({ board: [...board] });
   }
 
-  openAdjacentCells(startCell, board) {
+  openCells(startCell, board) {
     const stack = [];
     const bLength = board.length;
     const rLength = board[0].length;
