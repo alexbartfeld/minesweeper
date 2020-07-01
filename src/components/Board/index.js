@@ -7,14 +7,17 @@ export default class Board extends Component {
 
     this.state = {
       board: this.createBoard(props),
-      minesToFlag: props.mines
+      minesToFlag: props.mines,
+      isRevealAll: false,
     };
 
     this.onCellClick = this.onCellClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.resetBoard === 0) {
+    if (nextProps.revealAll !== this.state.isRevealAll) {
+      this.setState({ isRevealAll: !this.state.isRevealAll });
+    } else if (nextProps.resetBoard === 0) {
       this.setState({
         board: this.createBoard(nextProps),
         minesToFlag: nextProps.mines
@@ -173,10 +176,11 @@ export default class Board extends Component {
   }
 
   render() {
+    const { isRevealAll } = this.state;
     return (
       <div className="board">
         {this.state.board.map((row, i) => {
-          return <Row key={i} onCellClick={this.onCellClick} cells={row} />;
+          return <Row key={i} isRevealAll={isRevealAll} onCellClick={this.onCellClick} cells={row} />;
         })}
       </div>
     );

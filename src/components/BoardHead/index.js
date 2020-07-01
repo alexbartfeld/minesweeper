@@ -47,7 +47,7 @@ export default class BoardHead extends Component {
 
     render() {
         const { width, height, mines } = this.state;
-        const { flags, isGameOver, isPlayerWon } = this.props;
+        const { flags, isGameOver, isPlayerWon, onSuperManClick } = this.props;
         const gameStatus = isGameOver ? <div className="game-status">
             {isPlayerWon ? <span className="game-status--success">Seems like you survived!</span> :
                 <span className="game-status--fail">Your fight is over!</span>}
@@ -56,7 +56,8 @@ export default class BoardHead extends Component {
         return (
             <div className="board-head">
                 <div className="board-head__controls">
-                    <div>
+                    <button onClick={onSuperManClick} type="button">SuperMAN</button>
+                    <div className="controls__col">
                         <div className="game-inputs__group">
                             <label className="input-label">
                                 Width:

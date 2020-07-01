@@ -14,13 +14,15 @@ export default class Minesweeper extends Component {
       mines: 1,
       isGameOver: false,
       isPlayerWon: false,
-      gameActions: 0
+      gameActions: 0,
+      superManMode: false
     }
 
     this.onBoardAction = this.onBoardAction.bind(this);
     this.endGame = this.endGame.bind(this);
     this.updateFlags = this.updateFlags.bind(this);
     this.restartGame = this.restartGame.bind(this);
+    this.onSuperManClick = this.onSuperManClick.bind(this);
   }
 
   // what ever happend on the board now need to be ruled by the game rules
@@ -50,12 +52,18 @@ export default class Minesweeper extends Component {
     this.setState({ gameActions: this.state.gameActions + 1 });
   }
 
+  onSuperManClick() {
+    this.setState({ superManMode: !this.state.superManMode });
+  }
+
   render() {
-    const classes = this.state.isGameOver ? 'mine-sweeper game-over' : 'mine-sweeper'
+    // const classes = this.state.isGameOver ? 'mine-sweeper game-over' : 'mine-sweeper'
+    const classes = `mine-sweeper ${this.state.isGameOver ? 'game-over' : ''} ${this.state.superManMode ? 'super-man' : ''}`;
 
     return (
       <div className={classes}>
         <BoardHead
+          onSuperManClick={this.onSuperManClick}
           restartGame={this.restartGame}
           isGameOver={this.state.isGameOver}
           isPlayerWon={this.state.isPlayerWon}
@@ -64,6 +72,7 @@ export default class Minesweeper extends Component {
           mines={this.state.mines}
           flags={this.state.flags} />
         <Board
+          revealAll={this.state.superManMode}
           blockBoard={this.state.isGameOver}
           rows={this.state.rows}
           cells={this.state.cells}
