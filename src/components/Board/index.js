@@ -125,7 +125,7 @@ export default class Board extends Component {
       board = this.openCells(cell, board);
     }
 
-    this.props.boardMoves();
+    this.props.onBoardAction();
     this.setState({ board: [...board] });
   }
 

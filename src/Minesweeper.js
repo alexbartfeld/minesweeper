@@ -17,7 +17,7 @@ export default class Minesweeper extends Component {
       gameActions: 0
     }
 
-    this.boardMoves = this.boardMoves.bind(this);
+    this.onBoardAction = this.onBoardAction.bind(this);
     this.endGame = this.endGame.bind(this);
     this.updateFlags = this.updateFlags.bind(this);
     this.restartGame = this.restartGame.bind(this);
@@ -46,7 +46,7 @@ export default class Minesweeper extends Component {
     }))
   }
 
-  boardMoves() {
+  onBoardAction() {
     this.setState({ gameActions: this.state.gameActions + 1 });
   }
 
@@ -71,7 +71,7 @@ export default class Minesweeper extends Component {
           flags={this.state.flags}
           updateFlags={this.updateFlags}
           endGame={this.endGame}
-          boardMoves={this.boardMoves}
+          onBoardAction={this.onBoardAction}
           resetBoard={this.state.gameActions}
         />
       </div>
