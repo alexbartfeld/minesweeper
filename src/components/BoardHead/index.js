@@ -5,9 +5,9 @@ export default class BoardHead extends Component {
         super(props);
 
         this.state = {
-            width: 5,
-            height: 5,
-            mines: 5
+            height: props.rows,
+            width: props.cells,
+            mines: props.mines
         };
 
         this.onWidthChange = this.onWidthChange.bind(this);

@@ -59,6 +59,9 @@ export default class Minesweeper extends Component {
           restartGame={this.restartGame}
           isGameOver={this.state.isGameOver}
           isPlayerWon={this.state.isPlayerWon}
+          rows={this.state.rows}
+          cells={this.state.cells}
+          mines={this.state.mines}
           flags={this.state.flags} />
         <Board
           blockBoard={this.state.isGameOver}
