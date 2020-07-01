@@ -43,6 +43,30 @@ code {
   flex: 1 1 auto;
 }
 
+.board-head__controls {
+  display: flex;
+}
+
+.board-head__flags {
+  margin-left: 30px;
+}
+
+.game-inputs__group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+
+.input-label {
+  display: flex;
+  justify-content: space-between;
+}
+
+.game-input {
+  padding: 2px;
+  width: 60px;
+}
+
 .game-status {
   text-align: center;
 }

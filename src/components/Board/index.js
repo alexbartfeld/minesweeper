@@ -14,9 +14,12 @@ export default class Board extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    /* this.setState({
-      board: this.createBoard(nextProps)
-    }); */
+    if (nextProps.resetBoard === 0) {
+      this.setState({
+        board: this.createBoard(nextProps),
+        minesToFlag: nextProps.mines
+      });
+    }
   }
 
   componentDidUpdate() {
@@ -98,6 +101,8 @@ export default class Board extends Component {
         if (this.props.flags > 0) { // make sure you have spare flags first
           cell.hasFlag = true;
           this.props.updateFlags(1);
+        } else {
+          alert('No more mines left!');
         }
       }
       // update if a mine was flagged or unflagged
@@ -120,6 +125,7 @@ export default class Board extends Component {
       board = this.openCells(cell, board);
     }
 
+    this.props.boardMoves();
     this.setState({ board: [...board] });
   }
 
@@ -138,7 +144,7 @@ export default class Board extends Component {
           continue;
         }
         const cell = board[r][c];
-        if (cell.isOpen) {
+        if (cell.isOpen || cell.hasFlag) {
           continue;
         }
         cell.isOpen = true;

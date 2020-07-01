@@ -13,12 +13,14 @@ export default class Minesweeper extends Component {
       flags: 1,
       mines: 1,
       isGameOver: false,
-      isWon: false,
+      isPlayerWon: false,
       gameActions: 0
     }
 
+    this.boardMoves = this.boardMoves.bind(this);
     this.endGame = this.endGame.bind(this);
     this.updateFlags = this.updateFlags.bind(this);
+    this.restartGame = this.restartGame.bind(this);
   }
 
   // what ever happend on the board now need to be ruled by the game rules
@@ -26,14 +28,26 @@ export default class Minesweeper extends Component {
     this.setState({ flags: this.state.flags - flag })
   }
 
-  endGame(isWon) {
+  endGame(isPlayerWon) {
     if (!this.state.isGameOver) {
-      this.setState({ isGameOver: true, isWon });
+      this.setState({ isGameOver: true, isPlayerWon });
     }
   }
 
-  restartGame() {
-    this.setState({ gameActions: 0 })
+  restartGame(rows, cells, mines) {
+    this.setState(Object.assign({}, {
+      rows,
+      cells,
+      flags: mines,
+      mines,
+      gameActions: 0,
+      isGameOver: false,
+      isPlayerWon: false,
+    }))
+  }
+
+  boardMoves() {
+    this.setState({ gameActions: this.state.gameActions + 1 });
   }
 
   render() {
@@ -41,7 +55,11 @@ export default class Minesweeper extends Component {
 
     return (
       <div className={classes}>
-        <BoardHead isGameOver={this.state.isGameOver} isWon={this.state.isWon} flags={this.state.flags} />
+        <BoardHead
+          restartGame={this.restartGame}
+          isGameOver={this.state.isGameOver}
+          isPlayerWon={this.state.isPlayerWon}
+          flags={this.state.flags} />
         <Board
           blockBoard={this.state.isGameOver}
           rows={this.state.rows}
@@ -50,6 +68,8 @@ export default class Minesweeper extends Component {
           flags={this.state.flags}
           updateFlags={this.updateFlags}
           endGame={this.endGame}
+          boardMoves={this.boardMoves}
+          resetBoard={this.state.gameActions}
         />
       </div>
     )
