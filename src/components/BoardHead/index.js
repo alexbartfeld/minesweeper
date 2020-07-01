@@ -46,6 +46,7 @@ export default class BoardHead extends Component {
     }
 
     render() {
+        const { width, height, mines } = this.state;
         const { flags, isGameOver, isPlayerWon } = this.props;
         const gameStatus = isGameOver ? <div className="game-status">
             {isPlayerWon ? <span className="game-status--success">Seems like you survived!</span> :
@@ -59,20 +60,20 @@ export default class BoardHead extends Component {
                         <div className="game-inputs__group">
                             <label className="input-label">
                                 Width:
-                            <input className="game-input" type="number" onChange={this.onWidthChange} value={this.state.width} />
+                            <input className="game-input" type="number" onChange={this.onWidthChange} value={width} />
                             </label>
                             <label className="input-label">
                                 Height:
-                            <input className="game-input" type="number" onChange={this.onHeightChange} value={this.state.height} />
+                            <input className="game-input" type="number" onChange={this.onHeightChange} value={height} />
                             </label>
                             <label className="input-label">
                                 Mines:
-                            <input className="game-input" type="number" onChange={this.onMinesChange} value={this.state.mines} />
+                            <input className="game-input" type="number" onChange={this.onMinesChange} value={mines} />
                             </label>
                         </div>
                         <button
                             onClick={() => {
-                                this.props.restartGame(this.state.height, this.state.width, this.state.mines)
+                                this.props.restartGame(height, width, mines)
                             }}
                             className='board-head__new-game-btn'
                             type="button">NEW GAME</button>
